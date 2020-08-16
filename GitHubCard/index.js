@@ -3,6 +3,13 @@ import axios from 'axios';
   STEP 1: using axios, send a GET request to the following URL
     (replacing the placeholder with your Github name):
     https://api.github.com/users/<your name>
+    axios.get('https://api.github.com/users/juliusheese')
+    .then(response => {
+        console.log(follower(response))
+    })
+    .catch(error => {
+        console.log(error);
+    })
 */
 
 /*
@@ -29,8 +36,18 @@ import axios from 'axios';
     user, and adding that card to the DOM.
 */
 
-const followersArray = [];
 
+const followersArray = ["https://api.github.com/users/juliusheese", "https://api.github.com/users/tetondan", "https://api.github.com/users/dustinmyers", "https://api.github.com/users/justsml", "https://api.github.com/users/luishrd", "https://api.github.com/users/bigknell"];
+
+followersArray.forEach((arrayItem) => {
+    axios.get(arrayItem)
+        .then(response => {
+            document.querySelector(".cards").appendChild(follower(response));
+        })
+        .catch(error => {
+            console.log(error);
+        })
+});
 /*
   STEP 3: Create a function that accepts a single object as its only argument.
     Using DOM methods and properties, create and return the following markup:
@@ -50,6 +67,41 @@ const followersArray = [];
       </div>
     </div>
 */
+function follower(fdata) {
+    let c = document.createElement('div');
+    let i = document.createElement('img');
+    let cinfo = document.createElement('div');
+    let head3 = document.createElement('h3');
+    let usr = document.createElement('p');
+    let loc = document.createElement('p');
+    let profp = document.createElement('p');
+    let profa = document.createElement('a');
+    let follr = document.createElement('p');
+    let folling = document.createElement('p');
+    let bio = document.createElement('p');
+    c.setAttribute('class', 'card');
+    cinfo.setAttribute('class', 'card-info');
+    head3.setAttribute('class', 'name');
+    usr.setAttribute('class', 'username');
+    profa.href = fdata.data.url;
+    i.src = fdata.data.avatar_url;
+    c.appendChild(i);
+    c.appendChild(cinfo).textContent = fdata.date;
+    cinfo.appendChild(head3).textContent = fdata.data.name;
+    cinfo.appendChild(usr).textContent = fdata.data.login;
+    cinfo.appendChild(loc).textContent = "Location: " + fdata.data.location;
+    cinfo.appendChild(profp).textContent = "Profile: " + fdata.data.url;
+    profp.appendChild(profa);
+    cinfo.appendChild(follr).textContent = "Followers: " + fdata.data.followers;
+    cinfo.appendChild(folling).textContent = "Following: " + fdata.data.following;
+    cinfo.appendChild(bio).textContent = "Bio: " + fdata.data.bio;
+    return c;
+}
+//data.forEach((arrayItem) => {
+//  let newF = articleMaker(arrayItem);
+
+//  document.querySelector(".cards").appendChild(newF);
+//});
 
 /*
   List of LS Instructors Github username's:
